@@ -2,14 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { useGetUsers } from '@/data/get-users'
 import UsersTable from '@/components/users-table'
 
-// Mock the useGetUsers hook
+// Mock the useGetUsers hook to return a known value
 jest.mock('../src/data/get-users', () => ({
   useGetUsers: jest.fn(),
 }))
 
 describe('UsersTable', () => {
   beforeEach(() => {
-    // Provide a mock implementation for the hook
+    // Mock implementation of useGetUsers
     ;(useGetUsers as jest.Mock).mockImplementation(() => ({
       data: [],
       error: null,

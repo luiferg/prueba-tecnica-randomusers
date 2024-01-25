@@ -4,15 +4,17 @@ import { Filter, Trash } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGetUsers } from '@/data/get-users'
 import TableControls from './table-controls'
+import clsx from 'clsx'
 
 const UsersTable = () => {
   const [tableStyle, setTableStyle] = useState(false)
   const [users, setUsers] = useState<UserProps[]>([])
-  const [sort, setSort] = useState<SortBy>(SortBy.NONE)
+  const [sort, setSort] = useState<SortBy>(SortBy.none)
   const [filterByCountry, setFilterByCountry] = useState<string | null>(null)
   // This could be optimzed by making a pagination system, but for this test is not needed.
   const { data, error, isLoading, refetch } = useGetUsers()
 
+  // Using useEffect to set the users on the state
   useEffect(() => {
     if (data) {
       setUsers(data)
@@ -20,7 +22,7 @@ const UsersTable = () => {
   }, [])
 
   const toggleSortByCountry = () => {
-    const newSortValue = sort === SortBy.NONE ? SortBy.COUNTRY : SortBy.NONE
+    const newSortValue = sort === SortBy.none ? SortBy.country : SortBy.none
     setSort(newSortValue)
   }
 
@@ -44,8 +46,9 @@ const UsersTable = () => {
   }
 
   const handleResetValues = () => {
-    // So this function normal behavior is to make a new fetch,
+    // So refetch function normal behavior is to make a new fetch,
     // but im using a seed so it will always return the same data.
+    // Check https://randomuser.me/documentation#seeds for more info.
     refetch()
     setUsers(data || [])
   }
@@ -63,13 +66,13 @@ const UsersTable = () => {
 
   // Using useMemo to avoid sorting the users on every render
   const sortedUsers = useMemo(() => {
-    if (sort === SortBy.NONE) return filteredUsers
+    if (sort === SortBy.none) return filteredUsers
 
     // Extract the property to compare
     const compareProperties: Record<string, (user: UserProps) => any> = {
-      [SortBy.COUNTRY]: (user) => user.location.country,
-      [SortBy.NAME]: (user) => user.name.first,
-      [SortBy.LAST]: (user) => user.name.last,
+      [SortBy.country]: (user) => user.location.country,
+      [SortBy.name]: (user) => user.name.first,
+      [SortBy.last]: (user) => user.name.last,
     }
 
     // a and b are the users to compare
@@ -102,30 +105,30 @@ const UsersTable = () => {
               <th
                 className='cursor-pointer'
                 aria-label='Ordenar por nombre'
-                onClick={createSortHandler(SortBy.NAME)}
+                onClick={createSortHandler(SortBy.name)}
               >
                 Nombre
-                {sort === SortBy.NAME && (
+                {sort === SortBy.name && (
                   <Filter className='inline-block ml-2 text-sm' size={15} />
                 )}
               </th>
               <th
                 className='cursor-pointer'
                 aria-label='Ordenar por apellido'
-                onClick={createSortHandler(SortBy.LAST)}
+                onClick={createSortHandler(SortBy.last)}
               >
                 Apellido
-                {sort === SortBy.LAST && (
+                {sort === SortBy.last && (
                   <Filter className='inline-block ml-2 text-sm' size={15} />
                 )}
               </th>
               <th
                 className='cursor-pointer'
                 aria-label='Ordenar por país'
-                onClick={createSortHandler(SortBy.COUNTRY)}
+                onClick={createSortHandler(SortBy.country)}
               >
                 País
-                {sort === SortBy.COUNTRY && (
+                {sort === SortBy.country && (
                   <Filter className='inline-block ml-2' size={15} />
                 )}
               </th>
@@ -136,13 +139,13 @@ const UsersTable = () => {
             {sortedUsers?.map(({ name, location, email, picture }, index) => (
               <tr
                 key={email}
-                className={`grid grid-cols-5 w-full items-center py-2 px-4 ${
-                  tableStyle
-                    ? index % 2 === 0
-                      ? 'bg-slate-800 text-white'
-                      : 'bg-slate-700 text-white'
-                    : ''
-                }`}
+                className={clsx(
+                  'grid grid-cols-5 w-full items-center py-2 px-4',
+                  {
+                    'bg-slate-800 text-white': tableStyle && index % 2 === 0,
+                    'bg-slate-700 text-white': tableStyle && index % 2 !== 0,
+                  }
+                )}
               >
                 <td className='content-center'>
                   <img

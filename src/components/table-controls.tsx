@@ -18,8 +18,8 @@ const TableControls = ({
       </Button>
 
       <Button ariaLabel='Ordenar por país' onClick={toggleSortByCountry}>
-        {sort === SortBy.COUNTRY ? 'No ordenar por país' : 'Ordenar por país'}
-        {sort === SortBy.COUNTRY && (
+        {sort === SortBy.country ? 'No ordenar por país' : 'Ordenar por país'}
+        {sort === SortBy.country && (
           <Filter className='inline-block ml-2' size={15} />
         )}
       </Button>

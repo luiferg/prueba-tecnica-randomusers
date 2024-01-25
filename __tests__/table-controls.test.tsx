@@ -11,7 +11,7 @@ describe('TableControls', () => {
 
     render(
       <TableControls
-        sort={SortBy.COUNTRY}
+        sort={SortBy.country}
         toggleTableStyle={toggleTableStyle}
         toggleSortByCountry={toggleSortByCountry}
         handleResetValues={handleResetValues}
