@@ -12,7 +12,7 @@ const TableControls = ({
   setFilterByCountry,
 }: TableControlsProps) => {
   return (
-    <div className='grid grid-row-2 grid-cols-3 md:flex md:flex-row gap-4'>
+    <div className='grid grid-row-2 grid-cols-2 md:flex md:flex-row gap-4'>
       <Button ariaLabel='Colorear filas' onClick={toggleTableStyle}>
         Colorear filas
       </Button>
@@ -28,7 +28,7 @@ const TableControls = ({
         Reestablecer usuarios
       </Button>
       <input
-        className='col-span-3 rounded-lg p-2 border border-slate-900 bg-slate-100 text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 dark:focus:ring-offset-slate-100'
+        className='rounded-lg p-2 border border-slate-900 bg-slate-100 text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 dark:focus:ring-offset-slate-100'
         aria-label='Filtrar por país'
         placeholder='Filtrar por país'
         onChange={(e) => setFilterByCountry(e.target.value)}
